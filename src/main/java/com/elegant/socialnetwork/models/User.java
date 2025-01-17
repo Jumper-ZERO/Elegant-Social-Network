@@ -3,6 +3,8 @@ package com.elegant.socialnetwork.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
@@ -21,6 +23,7 @@ public class User {
     private String gender;
     private List<Integer> followers = new ArrayList<>();
     private List<Integer> followings = new ArrayList<>();
+    @JsonIgnore
     @ManyToMany
     private List<Post> savedPost = new ArrayList<>();
 
