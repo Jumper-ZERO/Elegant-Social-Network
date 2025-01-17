@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
@@ -24,7 +25,7 @@ public class User {
     private List<Integer> followers = new ArrayList<>();
     private List<Integer> followings = new ArrayList<>();
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(cascade = { CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST })
     private List<Post> savedPost = new ArrayList<>();
 
     public User() {

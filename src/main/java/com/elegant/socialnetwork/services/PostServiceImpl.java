@@ -1,5 +1,6 @@
 package com.elegant.socialnetwork.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class PostServiceImpl implements PostService {
         Post newPost = new Post();
         newPost.setCaption(post.getCaption());
         newPost.setImage(post.getImage());
-        // newPost.setCreatedAt(new LocalDateTime);
+        newPost.setCreatedAt(LocalDateTime.now());
         newPost.setVideo(post.getVideo());
         newPost.setUser(user);
         postRepository.save(newPost);
@@ -38,9 +39,16 @@ public class PostServiceImpl implements PostService {
     public String deletePost(Integer postId, Integer userId) throws Exception {
         Post post = findPostById(postId);
         User user = userService.findUserById(userId);
-        if (post.getUser().getId() != user.getId()) {
+        if (!post.getUser().getId().equals(user.getId())) {
             throw new Exception("You can't delete another user posts");
         }
+
+        List<User> usersWithSavedPost = userRepository.findAllBySavedPost(postId);
+        for (User u : usersWithSavedPost) {
+            u.getSavedPost().remove(post);
+            userRepository.save(u);
+        }
+
         postRepository.delete(post);
         return "Post deleted successfully";
     }
@@ -69,8 +77,10 @@ public class PostServiceImpl implements PostService {
         Post post = findPostById(postId);
         User user = userService.findUserById(userId);
 
-        if (user.getSavedPost().contains(post)) user.getSavedPost().remove(post);
-        else user.getSavedPost().add(post);
+        if (user.getSavedPost().contains(post))
+            user.getSavedPost().remove(post);
+        else
+            user.getSavedPost().add(post);
 
         userRepository.save(user);
 
@@ -81,11 +91,13 @@ public class PostServiceImpl implements PostService {
     public Post likePost(Integer postId, Integer userId) throws Exception {
         Post post = findPostById(postId);
         User user = userService.findUserById(userId);
-        
-        if (post.getLiked().contains(user)) post.getLiked().remove(user);
-        else post.getLiked().add(user);
+
+        if (post.getLiked().contains(user))
+            post.getLiked().remove(user);
+        else
+            post.getLiked().add(user);
 
         return postRepository.save(post);
     }
-    
+
 }
