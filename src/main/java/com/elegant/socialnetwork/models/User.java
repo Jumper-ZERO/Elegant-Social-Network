@@ -5,6 +5,7 @@ import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,6 +21,7 @@ public class User {
     private String gender;
     private List<Integer> followers = new ArrayList<>();
     private List<Integer> followings = new ArrayList<>();
+    @ManyToMany
     private List<Post> savedPost = new ArrayList<>();
 
     public User() {
