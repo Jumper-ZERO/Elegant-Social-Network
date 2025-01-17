@@ -20,6 +20,7 @@ public class User {
     private String gender;
     private List<Integer> followers = new ArrayList<>();
     private List<Integer> followings = new ArrayList<>();
+    private List<Post> savedPost = new ArrayList<>();
 
     public User() {
     }
@@ -114,6 +115,21 @@ public class User {
      */
     public void setFollowings(List<Integer> followings) {
         this.followings = followings;
+    }
+
+
+    /**
+     * @return List<Post> return the savedPost
+     */
+    public List<Post> getSavedPost() {
+        return savedPost;
+    }
+
+    /**
+     * @param savedPost the savedPost to set
+     */
+    public void setSavedPost(List<Post> savedPost) {
+        this.savedPost = savedPost;
     }
 
 }
