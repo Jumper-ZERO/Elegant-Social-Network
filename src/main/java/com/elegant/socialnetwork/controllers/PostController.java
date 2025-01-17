@@ -38,6 +38,12 @@ public class PostController {
         return new ResponseEntity<ApiResponse>(res, HttpStatus.OK);
     }
 
+    @PutMapping("/save/{postId}/user/{userId}")
+    public ResponseEntity<Post> savedPostHandler(@PathVariable Integer postId, @PathVariable Integer userId) throws Exception {
+        Post post = postService.savedPost(postId, userId);
+        return new ResponseEntity<Post>(post, HttpStatus.ACCEPTED);
+    }
+
     @PutMapping("/like/{postId}/user/{userId}")
     public ResponseEntity<Post> likePostHandler(@PathVariable Integer postId, @PathVariable Integer userId) throws Exception {
         Post post = postService.likePost(postId, userId);
