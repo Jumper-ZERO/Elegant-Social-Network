@@ -30,6 +30,7 @@ public class PostServiceImpl implements PostService {
         // newPost.setCreatedAt(new LocalDateTime);
         newPost.setVideo(post.getVideo());
         newPost.setUser(user);
+        postRepository.save(newPost);
         return newPost;
     }
 
