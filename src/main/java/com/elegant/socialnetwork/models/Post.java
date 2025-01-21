@@ -24,7 +24,7 @@ public class Post {
     private User user;
     @OneToMany
     private List<User> liked = new ArrayList<>();
-    @ManyToMany
+    @ManyToMany(mappedBy = "savedPost")
     private List<User> savedBy = new ArrayList<>();
     private LocalDateTime createdAt;
 
