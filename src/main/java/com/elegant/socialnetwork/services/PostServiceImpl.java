@@ -39,14 +39,9 @@ public class PostServiceImpl implements PostService {
     public String deletePost(Integer postId, Integer userId) throws Exception {
         Post post = findPostById(postId);
         User user = userService.findUserById(userId);
+
         if (!post.getUser().getId().equals(user.getId())) {
             throw new Exception("You can't delete another user posts");
-        }
-
-        List<User> usersWithSavedPost = userRepository.findAllBySavedPost(postId);
-        for (User u : usersWithSavedPost) {
-            u.getSavedPost().remove(post);
-            userRepository.save(u);
         }
 
         postRepository.delete(post);

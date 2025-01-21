@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
@@ -23,6 +24,8 @@ public class Post {
     private User user;
     @OneToMany
     private List<User> liked = new ArrayList<>();
+    @ManyToMany
+    private List<User> savedBy = new ArrayList<>();
     private LocalDateTime createdAt;
 
     public Post() {};
