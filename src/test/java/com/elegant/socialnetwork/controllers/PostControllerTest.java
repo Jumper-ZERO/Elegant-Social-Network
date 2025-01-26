@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 
 import java.time.LocalDateTime;
 
@@ -35,21 +34,20 @@ public class PostControllerTest {
     @Test
     @WithMockUser(username = "user", password = "password", roles = "USER")
     public void testCreatePost() throws Exception {
-        Post post = new Post(1, "Caption example", "example-image.png", "example-video.mp4", null, LocalDateTime.now());
+
+        Post post = new Post(1, "Caption example", "image-example.png", "video-example.mp4", null, LocalDateTime.now());
 
         int userId = 1;
 
         when(postService.createNewPost(any(Post.class), eq(userId))).thenReturn(post);
 
         mockMvc.perform(post("/posts/user/{userId}", userId)
-            .with(csrf())
-            .with(httpBasic("user", "password"))
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(post)))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.id").value(1))
-            .andExpect(jsonPath("$.caption").value("Caption example"));
-        
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(post)))
+                .andExpect(status().isCreated())
+                .andExpect(content().json(objectMapper.writeValueAsString(post)));
+
         verify(postService).createNewPost(any(Post.class), eq(userId));
     }
 }
